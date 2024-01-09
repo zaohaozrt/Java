@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插槽</title>
+</head>
+
+
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <div id="app">
+        <todo>
+            //插槽1
+            <template v-slot:todo-title >
+                <todo-title v-bind:title="title"></todo-title>
+            </template>
+            //插槽2
+            <template v-slot:todo-items>
+                <todo-items v-for="(item,index) in items" :item="item"  @remove="removeItems(index)"></todo-items>
+            </template>
+
+
+        </todo>
+
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        const app = createApp({
+            data(){
+                return{
+                    title:'标题',
+                    items:['good','nice','great']
+                }
+            },
+            methods:{
+                removeItems(index){
+                    this.items.splice(index,1)
+                }
+            }
+        })
+
+        //定义 待办事项 组件
+        app.component('todo',{
+
+            template:'<div><slot name="todo-title" /><ul><slot name="todo-items"></slot></ul></div>'
+        })
+
+        //定义 待办事项 标题 组件
+        app.component('todo-title',{
+            props: ['title'],
+            template: '<div>{{title}}</div>'
+        })
+        //定义 待办事项 内容 组件
+        app.component('todo-items',{
+            props: ['item'],
+            template: '<li>{{item}}<button v-on:click="remove">删除</button></li>',
+            methods:{
+                remove(){
+                    this.$emit('remove')
+                }
+            }
+
+        })
+
+        app.mount('#app') //挂载
+    </script>
+</body>
+</html>

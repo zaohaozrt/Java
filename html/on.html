@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件处理</title>
+</head>
+
+
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <dir id="app">
+        <button @click="say('hello')">Say hello</button>
+    </dir>
+
+    <script>
+        const { createApp } = Vue
+
+        const app = createApp({
+            methods: {
+                say(message) {
+                    alert(message)
+                }
+            }
+        })
+
+        app.mount('#app') //挂载
+    </script>
+</body>
+</html>
